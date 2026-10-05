@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Trabalhos Escolares</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            purple: '#8B5CF6',
+                            pink: '#EC4899',
+                            orange: '#F97316',
+                            blue: '#3B82F6',
+                            green: '#10B981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 50%, #3B82F6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg-header {
+            background: linear-gradient(135deg, #FF6B6B 0%, #556270 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.6);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 p-3 sm:p-6 md:p-10">
+
+    <div class="max-w-6xl mx-auto space-y-6">
+        
+        <!-- Header Principal -->
+        <header class="glass-card rounded-3xl p-6 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-4 relative overflow-hidden">
+            <div class="absolute -top-10 -left-10 w-32 h-32 bg-pink-400 rounded-full blur-3xl opacity-30"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl opacity-30"></div>
+            
+            <div class="z-10 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-1">
+                    <div class="bg-gradient-to-tr from-purple-600 to-pink-500 p-3 rounded-2xl text-white shadow-lg">
+                        <i class="fa-solid fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight gradient-text">
+                        Meus Trabalhos
+                    </h1>
+                </div>
+                <p class="text-gray-600 font-medium text-sm sm:text-base">Organize suas tarefas escolares de forma prática e colorida!</p>
+            </div>
+
+            <button onclick="openModal()" class="z-10 w-full md:w-auto bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 hover:opacity-95 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-plus text-lg"></i>
+                <span>Novo Trabalho</span>
+            </button>
+        </header>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass-card p-4 rounded-2xl shadow-lg border-l-4 border-purple-500 flex items-center gap-3">
+                <div class="p-3 bg-purple-100 text-purple-600 rounded-xl">
+                    <i class="fa-solid fa-list-check text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 uppercase">Total</p>
+                    <p id="stat-total" class="text-2xl font-bold text-gray-800">0</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-4 rounded-2xl shadow-lg border-l-4 border-yellow-500 flex items-center gap-3">
+                <div class="p-3 bg-yellow-100 text-yellow-600 rounded-xl">
+                    <i class="fa-solid fa-clock text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 uppercase">Pendentes</p>
+                    <p id="stat-pending" class="text-2xl font-bold text-gray-800">0</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-4 rounded-2xl shadow-lg border-l-4 border-blue-500 flex items-center gap-3">
+                <div class="p-3 bg-blue-100 text-blue-600 rounded-xl">
+                    <i class="fa-solid fa-spinner text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 uppercase">Em Andamento</p>
+                    <p id="stat-progress" class="text-2xl font-bold text-gray-800">0</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-4 rounded-2xl shadow-lg border-l-4 border-green-500 flex items-center gap-3">
+                <div class="p-3 bg-green-100 text-green-600 rounded-xl">
+                    <i class="fa-solid fa-circle-check text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 uppercase">Concluídos</p>
+                    <p id="stat-completed" class="text-2xl font-bold text-gray-800">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card p-4 sm:p-5 rounded-2xl shadow-lg flex flex-col md:flex-row gap-3 justify-between items-center">
+            <!-- Busca por nome -->
+            <div class="relative w-full md:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="search-input" oninput="renderTasks()" placeholder="Buscar trabalho por título..." class="w-full pl-10 pr-4 py-2.5 bg-white/80 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+            </div>
+
+            <!-- Filtros -->
+            <div class="flex flex-wrap sm:flex-nowrap gap-3 w-full md:w-auto">
+                <select id="filter-subject" onchange="renderTasks()" class="w-1/2 sm:w-auto px-4 py-2.5 bg-white/80 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm font-medium text-gray-700">
+                    <option value="all">Todas as Matérias</option>
+                    <option value="Matemática">Matemática</option>
+                    <option value="Português">Português</option>
+                    <option value="História">História</option>
+                    <option value="Geografia">Geografia</option>
+                    <option value="Ciências / Biologia">Ciências / Biologia</option>
+                    <option value="Física">Física</option>
+                    <option value="Química">Química</option>
+                    <option value="Inglês">Inglês</option>
+                    <option value="Artes">Artes</option>
+                    <option value="Outros">Outros</option>
+                </select>
+
+                <select id="filter-status" onchange="renderTasks()" class="w-1/2 sm:w-auto px-4 py-2.5 bg-white/80 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm font-medium text-gray-700">
+                    <option value="all">Todos os Status</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Em Andamento">Em Andamento</option>
+                    <option value="Concluído">Concluído</option>
+                </select>
+            </div>
+        </div>
+
+        <main id="tasks-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Os cards de trabalhos serão inseridos dinamicamente aqui via JavaScript -->
+        </main>
+
+        <!-- Estado Vazio (Nenhum trabalho cadastrado) -->
+        <div id="empty-state" class="hidden glass-card rounded-3xl p-12 text-center max-w-md mx-auto my-8">
+            <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 text-purple-500 text-3xl">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-1">Nenhum trabalho encontrado</h3>
+            <p class="text-gray-500 text-sm mb-6">Cadastre seus trabalhos escolares para nunca mais perder um prazo!</p>
+            <button onclick="openModal()" class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold py-2.5 px-5 rounded-xl transition-all shadow-md">
+                Cadastrar Agora
+            </button>
+        </div>
+
+    </div>
+
+    <div id="modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <h2 id="modal-title" class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square text-purple-600"></i> Cadastrar Trabalho
+            </h2>
+
+            <form id="task-form" onsubmit="saveTask(event)" class="space-y-4">
+                <input type="hidden" id="task-id">
+
+                <!-- Título -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Título do Trabalho *</label>
+                    <input type="text" id="task-title" required placeholder="Ex: Maquete do Sistema Solar, Resumo do Livro..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:bg-white focus:outline-none transition-all text-sm">
+                </div>
+
+                <!-- Disciplina e Data -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Disciplina *</label>
+                        <select id="task-subject" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:bg-white focus:outline-none transition-all text-sm">
+                            <option value="">Selecione...</option>
+                            <option value="Matemática">Matemática</option>
+                            <option value="Português">Português</option>
+                            <option value="História">História</option>
+                            <option value="Geografia">Geografia</option>
+                            <option value="Ciências / Biologia">Ciências / Biologia</option>
+                            <option value="Física">Física</option>
+                            <option value="Química">Química</option>
+                            <option value="Inglês">Inglês</option>
+                            <option value="Artes">Artes</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Data de Entrega *</label>
+                        <input type="date" id="task-date" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:bg-white focus:outline-none transition-all text-sm">
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Status do Trabalho</label>
+                    <select id="task-status" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:bg-white focus:outline-none transition-all text-sm">
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Concluído">Concluído</option>
+                    </select>
+                </div>
+
+                <!-- Descrição -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Descrição / Instruções</label>
+                    <textarea id="task-desc" rows="3" placeholder="Escreva os detalhes sobre o que deve ser feito..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:bg-white focus:outline-none transition-all text-sm"></textarea>
+                </div>
+
+                <!-- Opção de Anexo (Aba PDF / Link) -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-2">Anexo do Trabalho</label>
+                    
+                    <div class="flex border-b border-gray-200 mb-3">
+                        <button type="button" id="tab-link-btn" onclick="switchAttachmentTab('link')" class="py-2 px-4 text-xs font-bold border-b-2 border-purple-600 text-purple-600 focus:outline-none">
+                            <i class="fa-solid fa-link mr-1"></i> Inserir Link / URL
+                        </button>
+                        <button type="button" id="tab-pdf-btn" onclick="switchAttachmentTab('pdf')" class="py-2 px-4 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 focus:outline-none">
+                            <i class="fa-solid fa-file-pdf mr-1"></i> Anexar PDF
+                        </button>
+                    </div>
+
+                    <!-- Input de Link -->
+                    <div id="attachment-link-container">
+                        <input type="url" id="task-link" placeholder="https://docs.google.com/..., Canva, Youtube, etc." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:bg-white focus:outline-none transition-all text-sm">
+                    </div>
+
+                    <!-- Input de PDF -->
+                    <div id="attachment-pdf-container" class="hidden">
+                        <label class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-purple-500 mb-1"></i>
+                                <p class="text-xs text-gray-600 font-medium"><span class="font-bold">Clique para selecionar</span> um arquivo PDF</p>
+                                <p id="pdf-file-name" class="text-xs text-purple-600 font-semibold mt-1">Nenhum arquivo selecionado</p>
+                            </div>
+                            <input type="file" id="task-pdf" accept="application/pdf" onchange="handleFileSelect(event)" class="hidden" />
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Botões do Form -->
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-semibold text-sm hover:bg-gray-100 transition-all">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 text-white font-semibold text-sm shadow-md transition-all">
+                        Salvar Trabalho
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Array global para armazenar os trabalhos
+        let tasks = [];
+        let currentPdfData = null; // Guardar base64 temporário do PDF
+        let activeAttachmentType = 'link'; // 'link' ou 'pdf'
+
+        // Paleta de cores para os cards de acordo com a matéria
+        const subjectColors = {
+            'Matemática': 'from-blue-500 to-indigo-600',
+            'Português': 'from-red-500 to-pink-600',
+            'História': 'from-amber-500 to-orange-600',
+            'Geografia': 'from-emerald-500 to-teal-600',
+            'Ciências / Biologia': 'from-green-500 to-emerald-600',
+            'Física': 'from-purple-500 to-indigo-600',
+            'Química': 'from-cyan-500 to-blue-600',
+            'Inglês': 'from-rose-500 to-red-600',
+            'Artes': 'from-fuchsia-500 to-pink-600',
+            'Outros': 'from-slate-500 to-gray-600'
+        };
+
+        // Carregar dados na inicialização
+        window.addEventListener('DOMContentLoaded', () => {
+            loadTasks();
+            renderTasks();
+        });
+
+        // Carrega trabalhos do LocalStorage
+        function loadTasks() {
+            const saved = localStorage.getItem('school_tasks_data');
+            if (saved) {
+                try {
+                    tasks = JSON.parse(saved);
+                } catch (e) {
+                    console.error("Erro ao carregar do LocalStorage", e);
+                    tasks = [];
+                }
+            } else {
+                // Dados demonstrativos caso não haja nada cadastrado
+                tasks = [
+                    {
+                        id: '1',
+                        title: 'Apresentação sobre Energia Renovável',
+                        subject: 'Ciências / Biologia',
+                        date: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0],
+                        status: 'Em Andamento',
+                        desc: 'Criar slides para a feira de ciências abordando energia solar e eólica.',
+                        attachmentType: 'link',
+                        link: 'https://canva.com',
+                        pdfData: null,
+                        pdfName: ''
+                    },
+                    {
+                        id: '2',
+                        title: 'Resumo do livro Dom Casmurro',
+                        subject: 'Português',
+                        date: new Date(Date.now() + 86400000 * 7).toISOString().split('T')[0],
+                        status: 'Pendente',
+                        desc: 'Escrever uma análise crítica de no mínimo 2 páginas sobre os temas de ciúme e ambiguidade.',
+                        attachmentType: 'link',
+                        link: 'https://docs.google.com',
+                        pdfData: null,
+                        pdfName: ''
+                    }
+                ];
+                saveToLocalStorage();
+            }
+        }
+
+        // Salvar no LocalStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('school_tasks_data', JSON.stringify(tasks));
+        }
+
+        // Renderizar Lista de Trabalhos com Filtros
+        function renderTasks() {
+            const container = document.getElementById('tasks-container');
+            const emptyState = document.getElementById('empty-state');
+            const searchVal = document.getElementById('search-input').value.toLowerCase();
+            const subjectVal = document.getElementById('filter-subject').value;
+            const statusVal = document.getElementById('filter-status').value;
+
+            // Filtragem
+            const filtered = tasks.filter(task => {
+                const matchSearch = task.title.toLowerCase().includes(searchVal) || (task.desc && task.desc.toLowerCase().includes(searchVal));
+                const matchSubject = subjectVal === 'all' || task.subject === subjectVal;
+                const matchStatus = statusVal === 'all' || task.status === statusVal;
+                return matchSearch && matchSubject && matchStatus;
+            });
+
+            // Atualiza Estatísticas
+            updateStats();
+
+            // Exibir Estado Vazio
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            // Ordenar por data mais próxima
+            filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            // Gerar HTML dos Cards
+            container.innerHTML = filtered.map(task => {
+                const gradient = subjectColors[task.subject] || subjectColors['Outros'];
+                
+                // Formatação da Data
+                const dateParts = task.date.split('-');
+                const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+                
+                // Cálculo de dias restantes
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                const taskDate = new Date(task.date + 'T00:00:00');
+                const diffTime = taskDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                let badgeDays = '';
+                if (task.status === 'Concluído') {
+                    badgeDays = `<span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-semibold"><i class="fa-solid fa-check mr-1"></i> Entregue</span>`;
+                } else if (diffDays < 0) {
+                    badgeDays = `<span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-full font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Atrasado</span>`;
+                } else if (diffDays === 0) {
+                    badgeDays = `<span class="bg-orange-100 text-orange-700 text-xs px-2.5 py-1 rounded-full font-semibold"><i class="fa-solid fa-clock mr-1"></i> Entrega Hoje!</span>`;
+                } else {
+                    badgeDays = `<span class="bg-blue-100 text-blue-700 text-xs px-2.5 py-1 rounded-full font-semibold"><i class="fa-regular fa-calendar mr-1"></i> ${diffDays} dia(s) restante(s)</span>`;
+                }
+
+                // Status Badge Color
+                let statusBg = 'bg-yellow-100 text-yellow-800 border-yellow-300';
+                if (task.status === 'Em Andamento') statusBg = 'bg-blue-100 text-blue-800 border-blue-300';
+                if (task.status === 'Concluído') statusBg = 'bg-green-100 text-green-800 border-green-300';
+
+                // Botão de Anexo HTML
+                let attachmentBtnHtml = '';
+                if (task.attachmentType === 'pdf' && task.pdfData) {
+                    attachmentBtnHtml = `
+                        <a href="${task.pdfData}" download="${task.pdfName || 'Trabalho.pdf'}" class="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1.5 rounded-xl transition-all">
+                            <i class="fa-solid fa-file-pdf"></i> Baixar PDF
+                        </a>
+                    `;
+                } else if (task.link) {
+                    attachmentBtnHtml = `
+                        <a href="${task.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-purple-600 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3 py-1.5 rounded-xl transition-all">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Link
+                        </a>
+                    `;
+                } else {
+                    attachmentBtnHtml = `<span class="text-xs text-gray-400 italic">Sem anexo</span>`;
+                }
+
+                return `
+                    <div class="glass-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1 flex flex-col justify-between border border-white/60">
+                        <div>
+                            <!-- Cabeçalho do Card (Matéria) -->
+                            <div class="bg-gradient-to-r ${gradient} p-4 text-white flex justify-between items-center shadow-inner">
+                                <span class="text-xs font-extrabold uppercase tracking-wider bg-black/20 backdrop-blur-md px-3 py-1 rounded-lg">
+                                    ${task.subject}
+                                </span>
+                                <div class="flex items-center gap-1 bg-white/20 backdrop-blur-md rounded-lg px-2 py-1">
+                                    <button onclick="editTask('${task.id}')" title="Editar" class="hover:text-yellow-300 transition-colors p-1 text-sm">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button onclick="deleteTask('${task.id}')" title="Excluir" class="hover:text-red-300 transition-colors p-1 text-sm">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Corpo do Card -->
+                            <div class="p-5">
+                                <div class="flex justify-between items-start gap-2 mb-2">
+                                    <h3 class="text-lg font-bold text-gray-800 leading-snug">${escapeHtml(task.title)}</h3>
+                                </div>
+
+                                <p class="text-xs text-gray-600 mb-4 line-clamp-3 leading-relaxed">
+                                    ${task.desc ? escapeHtml(task.desc) : '<span class="italic text-gray-400">Nenhuma descrição informada.</span>'}
+                                </p>
+
+                                <div class="flex flex-wrap items-center gap-2 mb-4">
+                                    ${badgeDays}
+                                    <span class="text-xs px-2.5 py-1 rounded-full font-bold border ${statusBg}">
+                                        ${task.status}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rodapé do Card -->
+                        <div class="p-4 bg-gray-50/80 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                            <div>
+                                <span class="block text-[10px] uppercase font-bold text-gray-400">Data de Entrega</span>
+                                <span class="font-bold text-gray-700"><i class="fa-regular fa-calendar-check mr-1"></i>${formattedDate}</span>
+                            </div>
+                            <div>
+                                ${attachmentBtnHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Atualiza os contadores de estatísticas
+        function updateStats() {
+            document.getElementById('stat-total').innerText = tasks.length;
+            document.getElementById('stat-pending').innerText = tasks.filter(t => t.status === 'Pendente').length;
+            document.getElementById('stat-progress').innerText = tasks.filter(t => t.status === 'Em Andamento').length;
+            document.getElementById('stat-completed').innerText = tasks.filter(t => t.status === 'Concluído').length;
+        }
+
+        // Alternar abas de Anexo (Link x PDF)
+        function switchAttachmentTab(type) {
+            activeAttachmentType = type;
+            const linkBtn = document.getElementById('tab-link-btn');
+            const pdfBtn = document.getElementById('tab-pdf-btn');
+            const linkContainer = document.getElementById('attachment-link-container');
+            const pdfContainer = document.getElementById('attachment-pdf-container');
+
+            if (type === 'link') {
+                linkBtn.className = 'py-2 px-4 text-xs font-bold border-b-2 border-purple-600 text-purple-600 focus:outline-none';
+                pdfBtn.className = 'py-2 px-4 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 focus:outline-none';
+                linkContainer.classList.remove('hidden');
+                pdfContainer.classList.add('hidden');
+            } else {
+                pdfBtn.className = 'py-2 px-4 text-xs font-bold border-b-2 border-purple-600 text-purple-600 focus:outline-none';
+                linkBtn.className = 'py-2 px-4 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 focus:outline-none';
+                pdfContainer.classList.remove('hidden');
+                linkContainer.classList.add('hidden');
+            }
+        }
+
+        // Leitura de Arquivo PDF e conversão em Base64
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    showCustomToast('Por favor, selecione apenas arquivos em formato PDF.');
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) { // Limite de 5MB para localStorage
+                    showCustomToast('O arquivo PDF deve ter no máximo 5MB.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentPdfData = e.target.result;
+                    document.getElementById('pdf-file-name').innerText = file.name;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Abrir Modal
+        function openModal(isEdit = false) {
+            if (!isEdit) {
+                document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-plus-circle text-purple-600"></i> Cadastrar Trabalho';
+                document.getElementById('task-form').reset();
+                document.getElementById('task-id').value = '';
+                document.getElementById('pdf-file-name').innerText = 'Nenhum arquivo selecionado';
+                currentPdfData = null;
+                switchAttachmentTab('link');
+            }
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        // Fechar Modal
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        // Salvar ou Atualizar Trabalho
+        function saveTask(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('task-id').value;
+            const title = document.getElementById('task-title').value.trim();
+            const subject = document.getElementById('task-subject').value;
+            const date = document.getElementById('task-date').value;
+            const status = document.getElementById('task-status').value;
+            const desc = document.getElementById('task-desc').value.trim();
+            const link = document.getElementById('task-link').value.trim();
+            const pdfFileName = document.getElementById('pdf-file-name').innerText;
+
+            if (id) {
+                // Editar existente
+                const index = tasks.findIndex(t => t.id === id);
+                if (index !== -1) {
+                    tasks[index] = {
+                        ...tasks[index],
+                        title,
+                        subject,
+                        date,
+                        status,
+                        desc,
+                        attachmentType: activeAttachmentType,
+                        link: activeAttachmentType === 'link' ? link : '',
+                        pdfData: activeAttachmentType === 'pdf' ? (currentPdfData || tasks[index].pdfData) : null,
+                        pdfName: activeAttachmentType === 'pdf' ? (pdfFileName !== 'Nenhum arquivo selecionado' ? pdfFileName : tasks[index].pdfName) : ''
+                    };
+                }
+            } else {
+                // Criar novo
+                const newTask = {
+                    id: Date.now().toString(),
+                    title,
+                    subject,
+                    date,
+                    status,
+                    desc,
+                    attachmentType: activeAttachmentType,
+                    link: activeAttachmentType === 'link' ? link : '',
+                    pdfData: activeAttachmentType === 'pdf' ? currentPdfData : null,
+                    pdfName: activeAttachmentType === 'pdf' && currentPdfData ? pdfFileName : ''
+                };
+                tasks.push(newTask);
+            }
+
+            saveToLocalStorage();
+            renderTasks();
+            closeModal();
+        }
+
+        // Preencher form para Edição
+        function editTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (!task) return;
+
+            document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square text-purple-600"></i> Editar Trabalho';
+            document.getElementById('task-id').value = task.id;
+            document.getElementById('task-title').value = task.title;
+            document.getElementById('task-subject').value = task.subject;
+            document.getElementById('task-date').value = task.date;
+            document.getElementById('task-status').value = task.status;
+            document.getElementById('task-desc').value = task.desc || '';
+            document.getElementById('task-link').value = task.link || '';
+
+            if (task.attachmentType === 'pdf') {
+                switchAttachmentTab('pdf');
+                document.getElementById('pdf-file-name').innerText = task.pdfName || 'Arquivo PDF Anexado';
+                currentPdfData = task.pdfData;
+            } else {
+                switchAttachmentTab('link');
+                currentPdfData = null;
+            }
+
+            openModal(true);
+        }
+
+        // Deletar Trabalho
+        function deleteTask(id) {
+            if (confirm('Tem certeza que deseja excluir este trabalho escolar?')) {
+                tasks = tasks.filter(t => t.id !== id);
+                saveToLocalStorage();
+                renderTasks();
+            }
+        }
+
+        // Função de utilidade para escapar HTML (evitar XSS)
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Exibir caixa de aviso personalizada
+        function showCustomToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-2xl z-50 text-sm font-medium flex items-center gap-2 animate-bounce';
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-yellow-400"></i> ${msg}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+    </script>
+</body>
+</html>
